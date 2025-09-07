@@ -1,19 +1,57 @@
 "use client";
 
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-} from "@/components/ui/navigation-menu";
+import React, { useRef, useState } from "react";
+import PositionedMenu from "@/components/ui/positioned-menu";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 export default function Header() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const triggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const menus = [
+    {
+      label: "Desnutrición Crónica Infantil",
+      items: [
+        { href: "/info", label: "Información", color: "var(--menu-text-b)" },
+        { href: "/estadisticas", label: "Estadísticas", color: "var(--menu-text-b)" },
+      ],
+      baseColor: "var(--color-header-dos)",
+      hoverColor: "var(--menu-text-e)",
+    },
+    {
+      label: "¿Qué hacemos?",
+      items: [
+        { href: "/programas", label: "Programas", color: "var(--menu-text-c)" },
+        { href: "/iniciativas", label: "Iniciativas", color: "var(--menu-text-c)" },
+      ],
+      baseColor: "var(--color-header-tres)",
+      hoverColor: "var(--menu-text-e)",
+    },
+    {
+      label: "¿Quiénes somos?",
+      items: [
+        { href: "/nosotros", label: "Nosotros", color: "var(--menu-text-d)" },
+        { href: "/equipo", label: "Equipo", color: "var(--menu-text-d)" },
+      ],
+      baseColor: "var(--color-header-cuatro)",
+      hoverColor: "var(--menu-text-e)",
+    },
+  ];
+
+  const handleEnter = (i: number) => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    setOpenIndex(i);
+  };
+
+  const handleLeave = () => {
+    hoverTimeout.current = setTimeout(() => setOpenIndex(null), 200);
+  };
+
   return (
     <header
-      className="w-full border-b"
+      className="w-full shadow-md border-b relative z-50"
       style={{
         backgroundColor: "var(--header-bg)",
         borderColor: "var(--header-border)",
@@ -21,99 +59,96 @@ export default function Header() {
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-3">
         {/* LOGO */}
-        <div className="flex items-center space-x-1 text-2xl font-bold">
-          <span style={{ color: "var(--color-redni-uno)" }}>R</span>
-          <span style={{ color: "var(--color-redni-dos)" }}>E</span>
-          <span style={{ color: "var(--color-redni-tres)" }}>D</span>
-          <span style={{ color: "var(--color-redni-cuatro)" }}>N</span>
-          <span style={{ color: "var(--color-redni-cinco)" }}>I</span>
-        </div>
+        <Link href="/" className="flex items-center text-3xl font-bold cursor-pointer">
+          <Icon
+            icon="bi:tree-fill"
+            width="40"
+            height="40"
+            style={{ color: "var(--color-header-tres)" }}
+          />
+        </Link>
 
-        {/* NAVIGATION MENU */}
-        <NavigationMenu>
-          <NavigationMenuList className="space-x-6">
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                style={{ color: "var(--color-redni-dos)" }}
-                className="font-medium"
+        {/* NAVIGATION */}
+        <nav aria-label="Main navigation">
+          <ul className="flex items-center space-x-6">
+            {menus.map((m, i) => (
+              <li
+                key={m.label}
+                className="relative"
+                onMouseEnter={() => handleEnter(i)}
+                onMouseLeave={handleLeave}
               >
-                Desnutrición Crónica Infantil
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="p-4">
-                <NavigationMenuLink href="/info">
-                  Información
-                </NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+                <button
+                  ref={(el) => (triggerRefs.current[i] = el)}
+                  aria-expanded={openIndex === i}
+                  className={`
+                    relative flex items-center font-medium px-1 py-1
+                    transition-colors duration-200
+                    after:content-[''] after:absolute after:left-0 after:-bottom-1
+                    after:h-[2px] after:bg-current after:transition-all
+                    after:duration-300
+                    ${openIndex === i ? "after:w-full" : "after:w-0 hover:after:w-full"}
+                  `}
+                  style={{
+                    color: openIndex === i ? m.hoverColor : m.baseColor,
+                  }}
+                >
+                  {m.label}
+                  <Icon
+                    icon="mdi:chevron-down"
+                    className={`ml-1 transition-transform duration-200 ${
+                      openIndex === i ? "rotate-180" : ""
+                    }`}
+                    width="18"
+                    height="18"
+                  />
+                </button>
 
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                style={{ color: "var(--color-pink)" }}
-                className="font-medium"
-              >
-                ¿Qué hacemos?
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="p-4">
-                <NavigationMenuLink href="/programas">
-                  Programas
-                </NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                style={{ color: "var(--color-redni-tres)" }}
-                className="font-medium"
-              >
-                ¿Quiénes somos?
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="p-4">
-                <NavigationMenuLink href="/equipo">
-                  Nuestro Equipo
-                </NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                style={{ color: "var(--color-pink)" }}
-                className="font-medium"
-              >
-                ¿Como Sumarte?
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="p-4">
-                <NavigationMenuLink href="/sumarte">
-                  cosas
-                </NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                style={{ color: "var(--color-redni-cinco)" }}
-                className="font-medium">
-                Campañas
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="p-4">
-                <NavigationMenuLink href="/campanas">
-                  Campañas actuales
-                </NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+                <PositionedMenu
+                  triggerRef={{ current: triggerRefs.current[i] }}
+                  open={openIndex === i}
+                  onClose={() => setOpenIndex(null)}
+                  className="rounded-lg border shadow-md p-2"
+                  style={{
+                    backgroundColor: "var(--menu-bg)",
+                    borderColor: "var(--menu-border)",
+                  }}
+                  align="left"
+                >
+                  <ul
+                    className="flex flex-col space-y-1"
+                    onMouseEnter={() => {
+                      if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+                    }}
+                    onMouseLeave={handleLeave}
+                  >
+                    {m.items.map((it) => (
+                      <li key={it.href}>
+                        <a
+                          href={it.href}
+                          className="block px-4 py-2 rounded-md hover:bg-gray-100 transition"
+                          style={{ color: it.color }}
+                        >
+                          {it.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </PositionedMenu>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         {/* IDIOMAS + BOTÓN */}
         <div className="flex items-center space-x-4">
-          {/* Banderas con Iconify */}
-          <button className="hover:scale-110 transition">
+          <button className="hover:scale-110 transition" aria-label="Español">
             <Icon icon="twemoji:flag-spain" width="24" height="24" />
           </button>
-          <button className="hover:scale-110 transition">
+          <button className="hover:scale-110 transition" aria-label="Inglés">
             <Icon icon="twemoji:flag-united-kingdom" width="24" height="24" />
           </button>
 
-          {/* Botón DONAR */}
           <a
             href="/donar"
             style={{

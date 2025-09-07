@@ -82,11 +82,11 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --color-redni-uno: #dc2626;     
-  --color-redni-dos: #f97316;  
-  --color-redni-tres: #16a34a;  
-  --color-redni-cuatro: #facc15;  
-  --color-redni-cinco: #2563eb;    
+  --color-header-uno: #dc2626;     
+  --color-header-dos: #f97316;  
+  --color-header-tres: #16a34a;  
+  --color-header-cuatro: #facc15;  
+  --color-header-cinco: #2563eb;    
 
   --color-pink: #db2777;
   --color-gray: #6b7280;
@@ -96,9 +96,18 @@
   --color-btn-text: #ffffff;
 
   /* Header */
-  --header-bg: #355aaa;   
-  --header-border: #000000; 
+  --header-bg: #ffffff;   
+  --header-border: #d4d1d1; 
+  --menu-bg: #dfeaff;       
+  --menu-border: #e0dcdc;    
+  --menu-text-a: #dc2626;      
+  --menu-text-b: #f97316;    
+  --menu-text-c: #16a34a; 
+  --menu-text-d: #facc15;  
+  --menu-text-e: #2563eb; 
+  --menu-hover-bg: #e7ad2f; 
 }
+
 
 
 .dark {
