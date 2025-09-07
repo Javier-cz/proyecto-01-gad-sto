@@ -95,16 +95,19 @@
   --color-btn-bg-hover: #2563eb;
   --color-btn-text: #ffffff;
 
-  /* Header */
+
   --header-bg: #ffffff;   
   --header-border: #d4d1d1; 
+
   --menu-bg: #dfeaff;       
-  --menu-border: #e0dcdc;    
+  --menu-border: #e0dcdc;   
+
   --menu-text-a: #dc2626;      
   --menu-text-b: #f97316;    
   --menu-text-c: #16a34a; 
   --menu-text-d: #facc15;  
   --menu-text-e: #2563eb; 
+  
   --menu-hover-bg: #e7ad2f; 
 }
 

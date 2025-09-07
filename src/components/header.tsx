@@ -58,7 +58,7 @@ export default function Header() {
       }}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-3">
-        {/* LOGO */}
+
         <Link href="/" className="flex items-center text-3xl font-bold cursor-pointer">
           <Icon
             icon="bi:tree-fill"
@@ -68,7 +68,6 @@ export default function Header() {
           />
         </Link>
 
-        {/* NAVIGATION */}
         <nav aria-label="Main navigation">
           <ul className="flex items-center space-x-6">
             {menus.map((m, i) => (
@@ -140,7 +139,6 @@ export default function Header() {
           </ul>
         </nav>
 
-        {/* IDIOMAS + BOTÓN */}
         <div className="flex items-center space-x-4">
           <button className="hover:scale-110 transition" aria-label="Español">
             <Icon icon="twemoji:flag-spain" width="24" height="24" />
